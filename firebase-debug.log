@@ -1,0 +1,47 @@
+[debug] [2025-09-18T16:27:09.471Z] ----------------------------------------------------------------------
+[debug] [2025-09-18T16:27:09.473Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/wma3rvxxva78rqvnpja82nx5b3mclpxg-firebase-tools-14.15.2/lib/node_modules/firebase-tools/lib/bin/firebase.js deploy --project dev-project-33349 --only hosting
+[debug] [2025-09-18T16:27:09.474Z] CLI Version:   14.15.2
+[debug] [2025-09-18T16:27:09.474Z] Platform:      linux
+[debug] [2025-09-18T16:27:09.474Z] Node Version:  v20.19.1
+[debug] [2025-09-18T16:27:09.475Z] Time:          Thu Sep 18 2025 16:27:09 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-09-18T16:27:09.475Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-18T16:27:09.477Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-09-18T16:27:09.875Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-09-18T16:27:10.958Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-09-18T16:27:10.958Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-09-18T16:27:26.623Z] Running auto auth
+[debug] [2025-09-18T16:27:26.642Z] [iam] checking project dev-project-33349 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2025-09-18T16:27:26.643Z] No OAuth tokens found
+[debug] [2025-09-18T16:27:26.643Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/dev-project-33349:testIamPermissions [none]
+[debug] [2025-09-18T16:27:26.644Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/dev-project-33349:testIamPermissions x-goog-quota-user=projects/dev-project-33349
+[debug] [2025-09-18T16:27:26.644Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/dev-project-33349:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2025-09-18T16:27:27.691Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/dev-project-33349:testIamPermissions 200
+[debug] [2025-09-18T16:27:27.691Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/dev-project-33349:testIamPermissions {}
+[debug] [2025-09-18T16:27:27.692Z] [iam] error while checking permissions, command may fail: Authorization failed. This account is missing the following required permissions on project dev-project-33349:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2025-09-18T16:27:27.693Z] No OAuth tokens found
+[debug] [2025-09-18T16:27:27.693Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/dev-project-33349 [none]
+[debug] [2025-09-18T16:27:28.382Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/dev-project-33349 403
+[debug] [2025-09-18T16:27:28.382Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/dev-project-33349 {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2025-09-18T16:27:28.384Z] Request to https://firebase.googleapis.com/v1beta1/projects/dev-project-33349 had HTTP Error: 403, The caller does not have permission
+[debug] [2025-09-18T16:27:28.385Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects/dev-project-33349 had HTTP Error: 403, The caller does not have permission
+    at responseToError (/nix/store/wma3rvxxva78rqvnpja82nx5b3mclpxg-firebase-tools-14.15.2/lib/node_modules/firebase-tools/lib/responseToError.js:52:12)
+    at RetryOperation._fn (/nix/store/wma3rvxxva78rqvnpja82nx5b3mclpxg-firebase-tools-14.15.2/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to get Firebase project dev-project-33349. Please make sure the project exists and your account has permission to access it.
+[debug] [2025-09-18T16:27:40.293Z] ----------------------------------------------------------------------
+[debug] [2025-09-18T16:27:40.296Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/wma3rvxxva78rqvnpja82nx5b3mclpxg-firebase-tools-14.15.2/lib/node_modules/firebase-tools/lib/bin/firebase.js login
+[debug] [2025-09-18T16:27:40.296Z] CLI Version:   14.15.2
+[debug] [2025-09-18T16:27:40.296Z] Platform:      linux
+[debug] [2025-09-18T16:27:40.296Z] Node Version:  v20.19.1
+[debug] [2025-09-18T16:27:40.297Z] Time:          Thu Sep 18 2025 16:27:40 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-09-18T16:27:40.297Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-09-18T16:27:40.659Z] No OAuth tokens found
+[debug] [2025-09-18T16:27:40.660Z] No OAuth tokens found
+[error] Failed to fetch Firebase Project from current Studio Workspace: Unable to refresh auth: not yet authenticated.
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
