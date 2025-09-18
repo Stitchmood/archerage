@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крафтовый калькулятор</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .calculator-card {
+            background-color: #1f2937; /* bg-gray-800 */
+        }
+        .input-field {
+            background-color: #374151; /* bg-gray-700 */
+            border: 1px solid #4b5563; /* border-gray-600 */
+            color: white;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6; /* border-blue-500 */
+            box-shadow: 0 0 0 2px #1e40af; /* ring-2 ring-blue-600 */
+        }
+        .readonly-field {
+            background-color: #4b5563; /* bg-gray-600 */
+            cursor: not-allowed;
+        }
+        .total-field {
+            font-weight: 600;
+            color: #22c55e; /* text-green-500 */
+        }
+        .final-total-field {
+             font-weight: 700;
+             color: #f59e0b; /* text-amber-500 */
+        }
+        .subtotal-field {
+             color: #a5b4fc; /* text-indigo-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-100">Калькулятор крафта</h1>
+            <p class="text-gray-400 mt-2">Введите количество и цены для расчета итоговой стоимости.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- Зач. гравировка -->
+            <div class="calculator-card p-6 rounded-lg shadow-lg col-span-1 lg:col-span-3">
+                <h2 class="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">Зач. гравировка</h2>
+                <div class="space-y-4">
+                    <!-- Эмалевое стекло -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Эмалевое стекло</label>
+                        <input type="number" id="eng_glass_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="1">
+                        <input type="number" id="eng_glass_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="eng_glass_subtotal">0.00</span></div>
+                    </div>
+                    <!-- Прочный сплав -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Прочный сплав</label>
+                        <input type="number" id="eng_alloy_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="1">
+                        <input type="number" id="eng_alloy_price" placeholder="Цена" class="input-field p-2 rounded-md w-full readonly-field" readonly>
+                         <div class="text-right subtotal-field font-mono"> = <span id="eng_alloy_subtotal">0.00</span></div>
+                    </div>
+                     <!-- т1 грава -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Т1 грава</label>
+                        <input type="number" id="eng_t1_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="1">
+                        <input type="number" id="eng_t1_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="eng_t1_subtotal">0.00</span></div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-700 space-y-3 text-right">
+                    <div>
+                        <span class="text-xl font-bold">Стоимость 1 шт.:</span>
+                        <span id="engraving_total" class="text-2xl ml-2 total-field font-mono">0.00</span>
+                    </div>
+                    <div class="flex justify-end items-center gap-3">
+                        <label for="engraving_multiplier_qty" class="text-xl font-bold">Посчитать для</label>
+                        <input type="number" id="engraving_multiplier_qty" value="1" min="1" class="input-field p-2 rounded-md w-24 text-center">
+                        <label for="engraving_multiplier_qty" class="text-xl font-bold">шт.:</label>
+                        <span id="engraving_final_total" class="text-2xl ml-2 final-total-field font-mono">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Прочный сплав -->
+            <div class="calculator-card p-6 rounded-lg shadow-lg col-span-1 lg:col-span-2">
+                <h2 class="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">Прочный сплав</h2>
+                <div class="space-y-4">
+                    <!-- Слиток железа -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Слиток железа</label>
+                        <input type="number" id="alloy_fe_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="10">
+                        <input type="number" id="alloy_fe_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="alloy_fe_subtotal">0.00</span></div>
+                    </div>
+                    <!-- Слиток меди -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Слиток меди</label>
+                        <input type="number" id="alloy_cu_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="10">
+                        <input type="number" id="alloy_cu_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="alloy_cu_subtotal">0.00</span></div>
+                    </div>
+                    <!-- Слиток серебра -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Слиток серебра</label>
+                        <input type="number" id="alloy_ag_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="5">
+                        <input type="number" id="alloy_ag_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="alloy_ag_subtotal">0.00</span></div>
+                    </div>
+                     <!-- Масло -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Масло</label>
+                        <input type="number" id="alloy_oil_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="1">
+                        <input type="number" id="alloy_oil_price" placeholder="Цена" class="input-field p-2 rounded-md w-full readonly-field" readonly>
+                        <div class="text-right subtotal-field font-mono"> = <span id="alloy_oil_subtotal">0.00</span></div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-700 text-right">
+                    <span class="text-lg font-bold">Стоимость 1 шт.:</span>
+                    <span id="alloy_total" class="text-xl ml-2 total-field font-mono">0.00</span>
+                </div>
+            </div>
+
+            <!-- Масло -->
+            <div class="calculator-card p-6 rounded-lg shadow-lg col-span-1">
+                <h2 class="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">Масло</h2>
+                <div class="space-y-4">
+                     <!-- Акхиумный раствор -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Раствор</label>
+                        <input type="number" id="oil_ak_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="10">
+                        <input type="number" id="oil_ak_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="oil_ak_subtotal">0.00</span></div>
+                    </div>
+                    <!-- Азалия -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Азалия</label>
+                        <input type="number" id="oil_az_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="10">
+                        <input type="number" id="oil_az_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                        <div class="text-right subtotal-field font-mono"> = <span id="oil_az_subtotal">0.00</span></div>
+                    </div>
+                    <!-- Нарцисс -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                        <label class="font-medium sm:col-span-1">Нарцисс</label>
+                        <input type="number" id="oil_na_qty" placeholder="Кол-во" class="input-field p-2 rounded-md w-full" min="0" value="10">
+                        <input type="number" id="oil_na_price" placeholder="Цена" class="input-field p-2 rounded-md w-full" min="0" step="0.01">
+                         <div class="text-right subtotal-field font-mono"> = <span id="oil_na_subtotal">0.00</span></div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-gray-700 text-right">
+                    <span class="text-lg font-bold">Стоимость 1 шт.:</span>
+                    <span id="oil_total" class="text-xl ml-2 total-field font-mono">0.00</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const allInputs = document.querySelectorAll('input[type="number"]');
+
+            const getVal = id => parseFloat(document.getElementById(id).value) || 0;
+            const setVal = (id, value) => { document.getElementById(id).value = value.toFixed(2); };
+            const setText = (id, value) => { document.getElementById(id).textContent = value.toFixed(2); };
+
+            function calculateAll() {
+                // --- Масло Калькулятор ---
+                const oil_ak_qty = getVal('oil_ak_qty');
+                const oil_ak_price = getVal('oil_ak_price');
+                const oil_ak_subtotal = oil_ak_qty * oil_ak_price;
+                setText('oil_ak_subtotal', oil_ak_subtotal);
+
+                const oil_az_qty = getVal('oil_az_qty');
+                const oil_az_price = getVal('oil_az_price');
+                const oil_az_subtotal = oil_az_qty * oil_az_price;
+                setText('oil_az_subtotal', oil_az_subtotal);
+
+                const oil_na_qty = getVal('oil_na_qty');
+                const oil_na_price = getVal('oil_na_price');
+                const oil_na_subtotal = oil_na_qty * oil_na_price;
+                setText('oil_na_subtotal', oil_na_subtotal);
+
+                const oil_total = oil_ak_subtotal + oil_az_subtotal + oil_na_subtotal;
+                setText('oil_total', oil_total);
+                
+                // --- Прочный сплав Калькулятор ---
+                setVal('alloy_oil_price', oil_total); // <-- Обновление цены из калькулятора масла
+
+                const alloy_fe_qty = getVal('alloy_fe_qty');
+                const alloy_fe_price = getVal('alloy_fe_price');
+                const alloy_fe_subtotal = alloy_fe_qty * alloy_fe_price;
+                setText('alloy_fe_subtotal', alloy_fe_subtotal);
+
+                const alloy_cu_qty = getVal('alloy_cu_qty');
+                const alloy_cu_price = getVal('alloy_cu_price');
+                const alloy_cu_subtotal = alloy_cu_qty * alloy_cu_price;
+                setText('alloy_cu_subtotal', alloy_cu_subtotal);
+
+                const alloy_ag_qty = getVal('alloy_ag_qty');
+                const alloy_ag_price = getVal('alloy_ag_price');
+                const alloy_ag_subtotal = alloy_ag_qty * alloy_ag_price;
+                setText('alloy_ag_subtotal', alloy_ag_subtotal);
+
+                const alloy_oil_qty = getVal('alloy_oil_qty');
+                const alloy_oil_price = getVal('alloy_oil_price');
+                const alloy_oil_subtotal = alloy_oil_qty * alloy_oil_price;
+                setText('alloy_oil_subtotal', alloy_oil_subtotal);
+
+                const alloy_total = alloy_fe_subtotal + alloy_cu_subtotal + alloy_ag_subtotal + alloy_oil_subtotal;
+                setText('alloy_total', alloy_total);
+                
+                // --- Зач. гравировка Калькулятор ---
+                setVal('eng_alloy_price', alloy_total); // <-- Обновление цены из калькулятора сплава
+                
+                const eng_glass_qty = getVal('eng_glass_qty');
+                const eng_glass_price = getVal('eng_glass_price');
+                const eng_glass_subtotal = eng_glass_qty * eng_glass_price;
+                setText('eng_glass_subtotal', eng_glass_subtotal);
+
+                const eng_alloy_qty = getVal('eng_alloy_qty');
+                const eng_alloy_price = getVal('eng_alloy_price');
+                const eng_alloy_subtotal = eng_alloy_qty * eng_alloy_price;
+                setText('eng_alloy_subtotal', eng_alloy_subtotal);
+                
+                const eng_t1_qty = getVal('eng_t1_qty');
+                const eng_t1_price = getVal('eng_t1_price');
+                const eng_t1_subtotal = eng_t1_qty * eng_t1_price;
+                setText('eng_t1_subtotal', eng_t1_subtotal);
+
+                const engraving_total = eng_glass_subtotal + eng_alloy_subtotal + eng_t1_subtotal;
+                setText('engraving_total', engraving_total);
+
+                // Расчет итоговой суммы для нескольких штук
+                const multiplier = getVal('engraving_multiplier_qty');
+                const final_total = engraving_total * multiplier;
+                setText('engraving_final_total', final_total);
+
+                // Сохранение данных в localStorage
+                saveData();
+            }
+            
+            function saveData() {
+                const data = {};
+                allInputs.forEach(input => {
+                    if (!input.readOnly) {
+                        data[input.id] = input.value;
+                    }
+                });
+                localStorage.setItem('craftingCalculatorData', JSON.stringify(data));
+            }
+
+            function loadData() {
+                const data = JSON.parse(localStorage.getItem('craftingCalculatorData'));
+                if (data) {
+                    allInputs.forEach(input => {
+                        if (data[input.id] !== undefined) {
+                            input.value = data[input.id];
+                        }
+                    });
+                }
+            }
+
+            // Загрузка данных и первый расчет при старте
+            loadData();
+            calculateAll();
+
+            // Добавление обработчиков событий на все поля ввода
+            allInputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+            });
+        });
+    </script>
+</body>
+</html>
+
